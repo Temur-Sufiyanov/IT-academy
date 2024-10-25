@@ -1,0 +1,85 @@
+{% extends "main.html" %}
+{% load static  %}
+
+
+
+{% block content %}
+
+
+
+<main class="projects">
+    <section class="hero-section text-center">
+      <div class="container container--narrow">
+        <div class="hero-section__box">
+          <h2> <span>Loyihalarni</span> qidirib top</h2>
+        </div>
+
+        <div class="hero-section__search">
+          <form class="form" action="{% url 'projects_searchbar' %}" method="get"> {% csrf_token %}
+            <div class="form__field">
+              <label for="formInput#search">Loyihalarni qidir </label>
+              <input class="input input--text" id="formInput#search" type="text" name="search"
+                placeholder="Loyihalar nomi bilan qidir" />
+            </div>
+
+            <input class="btn btn--sub btn--lg" type="submit" value="Qidir" />
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Search Result: DevList -->
+    <section class="projectsList">
+      <div class="container">
+        <div class="grid grid--three">
+            
+          {% for project in page_obj %}      
+          <div class="column">
+            <div class="card project">
+              <a href="{% url 'project' project.id %}" class="project">
+                <img class="project__thumbnail" src="{{project.image.url}}" alt="project thumbnail" />
+                <div class="card__body">
+                  <h3 class="project__title">{{project.title}}</h3>
+                  {% if project.user and project.user.id %}
+                      <p><a class="project__author" href="{% url 'profile' project.user.id %}">{{project.user}}</a></p>
+                  {% else %}
+                      <p class="project__author">Unknown User</p>
+                  {% endif %}
+                  <p class="project--rating">
+                    <span style="font-weight: bold;">{{project.vote_ratio}}</span> Yaxshi baho ({{project.vote_count}} Ovoz)
+                  </p>
+                  <div class="project__tags">
+                    
+                    {% for tag in project.tag.all %}
+                    <span class="tag tag--pill tag--main">
+                      <small>{{tag.name}}</small>
+                    </span>
+                    {% endfor %}
+
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <div class="pagination">
+      <ul class="container">
+        
+        {% if page_obj.has_previous %}
+        <li><a  href="?page={{ page_obj.previous_page_number }}" class="btn ">&#10094; Orqaga</a></li>
+        {% endif %}
+        
+        {% for p in page_obj.paginator.page_range %}
+        <li><a href="?page={{p}}" class="btn {% if p == page_obj.number %} btn--sub{% endif %}"s>{{p}}</a></li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}" class="btn">Oldinga &#10095;</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </main>
+
+{% endblock content %}

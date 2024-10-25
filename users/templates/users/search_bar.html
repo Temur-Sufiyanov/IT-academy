@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if profil %}
+<center><h2>Search result found</h2></center>
+<a class="btn btn--sub btn--lg  my-md" href="{% url 'profiles' %}"><i class="im im-angle-left"> Orqaga</i></a>
+<br>
+{% for p in profil %}  
+<div class="column card" align=center>
+    <div class="dev">
+    <a href="{% url 'profile' p.id %}" class="card__body">
+        <div class="dev__profile">
+        <img class="avatar avatar--md" src="{{p.image.url}}" alt="image" />
+        <div class="dev__meta">
+            <h3>{{p.name}}</h3>
+            <h5>{{p.info}}</h5>
+        </div>
+        </div>
+        <p class="dev__info">{{p.bio}}</p>
+        <div class="dev__skills">
+            
+            {% for t_skills in p.tag_skills.all %}
+            <span class="tag tag--pill tag--main">
+                <small>{{t_skills.name}}</small>
+            </span>
+            {% endfor %}
+        </div>
+    </a>
+    </div>
+</div>
+{% endfor %}
+    {% else %}    
+    <center><h2>Nothing found found</h2></center>
+{% endif %}
+    
+
+
+
+{% endblock content %}

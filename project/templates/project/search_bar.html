@@ -1,0 +1,42 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+
+{% if post %}
+<center><h2>Search result found</h2></center>
+<a class="btn btn--sub btn--lg  my-md" href="{% url 'projects' %}"><i class="im im-angle-left"> Orqaga</i></a>
+<br>
+
+{% for p in post %}
+    <div class="card project"  align = center>
+        <a href="{% url 'project' p.id %}" class="project">
+        <img class="project__thumbnail" src="{{p.image.url}}" alt="project thumbnail" />
+        <div class="card__body">
+            <h3 class="project__title">{{p.title}}</h3>
+            {% if p.user and p.user.id %}
+                <p><a class="project__author" href="{% url 'profile' p.user.id %}">{{p.user}}</a></p>
+            {% else %}
+                <p class="project__author">Unknown User</p>
+            {% endif %}
+            <p class="project--rating">
+            <span style="font-weight: bold;">{{p.vote_ratio}}</span> Yaxshi baho ({{p.vote_count}} Ovoz)
+            </p>
+            <div class="project__tags">
+            
+            {% for tag in p.tag.all %}
+            <span class="tag tag--pill tag--main">
+                <small>{{tag.name}}</small>
+            </span>
+            {% endfor %} 
+            </div>
+        </div>
+        </a>
+{% endfor %} 
+    {% else %}    
+    <center><h2>Nothing found found</h2></center>
+{% endif %}
+    
+
+{% endblock content %}

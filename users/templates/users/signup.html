@@ -1,0 +1,36 @@
+{% extends "main.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="auth">
+  <div class="card">
+      <div class="auth__header text-center">
+          <a href="{% url 'profiles' %}">
+              <img src="{% static 'images/icon.svg' %}" alt="icon" />
+          </a>
+          <h3>Ro'yxtdan o'tish</h3>
+      </div>
+
+      <form action="{% url 'register' %}" method="POST" class="form auth__form">
+          {% csrf_token %}
+          <!-- Input:Text -->
+          {% for f in form %}
+
+          <div class="form__field">
+              <label for="formInput#text">{{f.label}} </label>
+              {{f}}
+          </div>
+          {% endfor %}
+
+          <div class="auth__actions">
+              <input class="btn btn--sub btn--lg" type="submit" value="Ro'yxtdan o'tish" />
+          </div>
+      </form>
+      <div class="auth__alternative">
+          <p>Ro'yxtdan o'tkanmisiz?</p>
+          <a href="{% url 'login' %}">Kirish</a>
+      </div>
+  </div>
+</div>
+{% endblock content %}

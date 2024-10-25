@@ -1,0 +1,102 @@
+{% extends "main.html" %}
+
+{% load static%}
+
+{% block content %}
+
+
+  <!-- Main Section -->
+  <main class="profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              <img class="avatar avatar--xl" src="{{ one_user.image.url }}" />
+              <h2 class="dev__name">{{one_user.name}}</h2>
+              <p class="dev__title">{{one_user.info}}</p>
+              <p class="dev__location">{{one_user.location}}</p>
+              <ul class="dev__social">
+                <li>
+                  <a title="Github" href="#" target="_blank"><i class="im im-github"></i></a>
+                </li>
+                <li>
+                  <a title="Facebook" href="#" target="_blank"><i class="im im-facebook"></i></a>
+                </li>
+                <li>
+                  <a title="Youtube" href="#" target="_blank"><i class="im im-youtube"></i></a>
+                </li>
+                <li>
+                  <a title="Instagram" href="#" target="_blank"><i class="im im-instagram"></i></a>
+                </li>
+              </ul>
+              <a href="#" class="btn btn--sub btn--lg">Habar jo'nating </a>
+            </div>
+          </div>
+        </div>
+        <div class="column column--2of3">
+          <div class="devInfo">
+            <h3 class="devInfo__title">Men haqimda</h3>
+            <p class="devInfo__about">{{one_user.bio}}</p>
+          </div>
+          <div class="devInfo">
+            <h3 class="devInfo__title">Malakalari</h3>
+            <div class="devInfo__skills">
+              
+              {% for skill in one_user.tag_skills.all %}
+              <div class="devSkill">
+                <h4 class="devSkill__title">{{skill.name}}</h4>
+                <p class="devSkill__info">{{skill.description}}</p>
+              </div>
+              {% endfor %}
+              <h3 class="devInfo__subtitle">Boshqa malakalar</h3>
+              <div class="devInfo__otherSkills">
+                {% for skill in one_user.tag_skills.all %}
+                <span class="tag tag--pill tag--sub tag--lg">
+                  <small>{{skill.name}}</small>
+                </span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="devInfo">
+            <h3 class="devInfo__title">Loyihalar</h3>
+            <div class="grid grid--two">
+              
+              {% for user_project in  one_user.project_set.all%}
+                
+              <div class="column">
+                <div class="card project">
+                  <a href="{% url 'project' user_project.id %}" class="project">
+                    <img class="project__thumbnail" src="{{ user_project.image.url}}" alt="project thumbnail" />
+                    <div class="card__body">
+                      <h3 class="project__title">{{user_project.title}}</h3>
+                      <p><a class="project__author" href="{% url 'profile' user_project.id %}">{{user_project.name}}</a></p>
+                      <p class="project--rating">
+                        <span style="font-weight: bold;">{{user_project.vote_ratio}}%</span> Ijobiy baho ({{user_project.vote_count}} Ovoz)
+                      </p>
+                      <div class="project__tags">
+                        
+                        {% for pr_tags in user_project.tag.all %}
+                        <span class="tag tag--pill tag--main">
+                          <small>{{pr_tags.name}}</small>
+                        </span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              {%endfor%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+
+
+{% endblock content %}
